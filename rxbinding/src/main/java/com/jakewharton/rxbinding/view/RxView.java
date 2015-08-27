@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+
 import com.jakewharton.rxbinding.internal.Functions;
 import rx.Observable;
 import rx.functions.Action1;
@@ -66,6 +68,20 @@ public final class RxView {
   @CheckResult @NonNull
   public static Observable<Object> clicks(@NonNull View view) {
     return Observable.create(new ViewClickOnSubscribe(view));
+  }
+
+  /**
+   * Create an observable which emits on {@code view} click events. The emitted value is
+   * unspecified and should only be used as notification. This overload takes a
+   * {@link BindableOnClickListener} instance and does not call
+   * {@link View#setOnClickListener(OnClickListener)}, rather it reacts to the {@code listener}
+   * <p>
+   * <em>Warning:</em> The created observable keeps a strong reference to {@code view}. Unsubscribe
+   * to free this reference.
+   */
+  @CheckResult @NonNull
+  public static Observable<Object> clicks(@NonNull View view, @NonNull BindableOnClickListener listener) {
+    return Observable.create(new ViewClickOnSubscribe(view, listener));
   }
 
   /**

@@ -3,6 +3,7 @@ package com.jakewharton.rxbinding.view
 import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnClickListener
 import com.jakewharton.rxbinding.internal.Functions
 import rx.Observable
 import rx.functions.Action1
@@ -46,6 +47,17 @@ public inline fun View.detaches(): Observable<Any> = RxView.detaches(this)
  * clicks. Only one observable can be used for a view at a time.
  */
 public inline fun View.clicks(): Observable<Any> = RxView.clicks(this)
+
+/**
+ * Create an observable which emits on `view` click events. The emitted value is
+ * unspecified and should only be used as notification. This overload takes a
+ * [BindableOnClickListener] instance and does not call
+ * {@link View#setOnClickListener(OnClickListener)}, rather it reacts to the `listener`
+ * 
+ * *Warning:* The created observable keeps a strong reference to `view`. Unsubscribe
+ * to free this reference.
+ */
+public inline fun View.clicks(listener: BindableOnClickListener): Observable<Any> = RxView.clicks(this, listener)
 
 /**
  * Create an observable of click events for `view`.
